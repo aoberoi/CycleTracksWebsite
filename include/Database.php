@@ -8,9 +8,9 @@ abstract class DatabaseConnection extends mysqli
 	const PASSWORD = 'XXXXXXXXX';
 	const DATABASE = 'bike_model';
 
-	public function __construct( $host, $user, $password, $database )
+	public function __construct( $host, $user, $password, $database, $port )
 	{
-		parent::__construct( $host, $user, $password, $database );
+		parent::__construct( $host, $user, $password, $database, $port );
 
 		if ( mysqli_connect_error() )
 			throw new DatabaseConnectionException();
@@ -30,9 +30,18 @@ class LocalDatabaseConnection extends DatabaseConnection
 	const HOST     = 'localhost';
 
 	public function __construct()
-	{
-		parent::__construct( self::HOST, self::USER, self::PASSWORD, self::DATABASE );
-	}
+        {
+          $services_json = json_decode(getenv("VCAP_SERVICES"),true);
+          $mysql_config = $services_json["mysql-5.1"][0]["credentials"];
+          $username = $mysql_config["username"];
+          $password = $mysql_config["password"];
+          $hostname = $mysql_config["hostname"];
+          $port = $mysql_config["port"];
+          $db = $mysql_config["name"];
+          //$link = mysql_connect("$hostname:$port", $username, $password);
+          //$db_selected = mysql_select_db($db, $link);
+          parent::__construct( $hostname , $username, $password, $db, $port );
+        }
 }
 
 class DatabaseConnectionFactory 

@@ -1,8 +1,8 @@
 <?php
 
-require_once('UserFactory.php');
-require_once('TripFactory.php');
-require_once('CoordFactory.php');
+require_once('../../include/UserFactory.php');
+require_once('../../include/TripFactory.php');
+require_once('../../include/CoordFactory.php');
 
 define( 'DATE_FORMAT',        'Y-m-d h:i:s' );
 define( 'PROTOCOL_VERSION_1', 1 );
